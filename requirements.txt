@@ -1,5 +1,6 @@
 buildozer==1.5.0
 cython==0.29.33
-python-for-android==2024.01.21
+python-for-android==2023.10.16
 kivy==2.3.0
 kivymd==1.2.0
+sh<2.0
