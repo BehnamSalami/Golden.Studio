@@ -166,6 +166,12 @@ jobs:
         find $ANDROID_HOME -name aidl
 
 
+    - name: Clean Buildozer cache
+
+      run: |
+
+        rm -rf ~/.buildozer
+
 
     - name: Build APK
 
