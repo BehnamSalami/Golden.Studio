@@ -1,14 +1,15 @@
 # Golden.Studio
-Golden Studio
-Offline Python Workspace
+.Golden Studio
+.Offline Python Workspace
 
-Features
+.Features
 
  .Project Manager
-Python Code Editor
-Automatic Form Generator
-Python Runner
-SQLite Database
-PDF Reports
-Result History
+.Python Code Editor
+.Automatic Form Generator
+.Python Runner
+.SQLite Database
+.PDF Reports
+.Result History
+
 behnam salami
