@@ -1,111 +1,239 @@
 from kivy.uix.screenmanager import Screen
+
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.label import MDLabel
-
 from kivymd.uix.textfield import MDTextField
 
-from app.database import save_project, create_database
+
+from app.database import *
+from app.python_runner import run_code
 
 
-# ایجاد دیتابیس در شروع برنامه
 create_database()
 
 
-class HomeScreen(Screen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+class ProjectsScreen(Screen):
 
-        layout = MDBoxLayout(
+
+    def __init__(self,**kw):
+
+        super().__init__(**kw)
+
+
+        self.layout=MDBoxLayout(
             orientation="vertical",
             padding=20,
             spacing=20
         )
 
-        title = MDLabel(
-            text="Golden Studio\n\nپروژه‌ها",
+
+        self.refresh()
+
+
+        self.add_widget(self.layout)
+
+
+
+    def refresh(self):
+
+        self.layout.clear_widgets()
+
+
+        title=MDLabel(
+            text="📁 پروژه‌ها",
             halign="center"
         )
 
-        create_button = MDRaisedButton(
-            text="ایجاد پروژه جدید",
-            pos_hint={"center_x": 0.5}
+        self.layout.add_widget(title)
+
+
+
+        for p in get_projects():
+
+            btn=MDRaisedButton(
+                text="📁 "+p[1]
+            )
+
+
+            btn.bind(
+                on_press=lambda x,p=p:
+                self.open_project(p[0])
+            )
+
+
+            self.layout.add_widget(btn)
+
+
+
+        add=MDRaisedButton(
+            text="+ پروژه جدید"
         )
 
-        create_button.bind(
-            on_press=self.open_create_project
+
+        add.bind(
+            on_press=lambda x:
+            setattr(self.manager,"current","create")
         )
 
-        layout.add_widget(title)
-        layout.add_widget(create_button)
 
-        self.add_widget(layout)
+        self.layout.add_widget(add)
 
 
-    def open_create_project(self, *args):
 
-        self.manager.current = "create_project"
+    def open_project(self,id):
+
+        screen=self.manager.get_screen("detail")
+
+        screen.project_id=id
+
+        self.manager.current="detail"
+
+
 
 
 
 class CreateProjectScreen(Screen):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
-        layout = MDBoxLayout(
+    def __init__(self,**kw):
+
+        super().__init__(**kw)
+
+
+        layout=MDBoxLayout(
             orientation="vertical",
             padding=20,
             spacing=15
         )
 
 
-        title = MDLabel(
-            text="ایجاد پروژه جدید",
-            halign="center"
-        )
-
-
-        self.project_name = MDTextField(
+        self.name=MDTextField(
             hint_text="نام پروژه"
         )
 
 
-        self.python_code = MDTextField(
-            hint_text="دستورات پایتون پروژه",
+        self.code=MDTextField(
+            hint_text="کد پایتون تحلیل",
             multiline=True
         )
 
 
-        save_button = MDRaisedButton(
-            text="ذخیره پروژه",
-            pos_hint={"center_x": 0.5}
+        save=MDRaisedButton(
+            text="ساخت پروژه"
         )
 
 
-        save_button.bind(
+        save.bind(
             on_press=self.save
         )
 
 
-        layout.add_widget(title)
-        layout.add_widget(self.project_name)
-        layout.add_widget(self.python_code)
-        layout.add_widget(save_button)
+        layout.add_widget(self.name)
+        layout.add_widget(self.code)
+        layout.add_widget(save)
 
 
         self.add_widget(layout)
 
 
-    def save(self, *args):
 
-        save_project(
-            self.project_name.text,
-            self.python_code.text
+    def save(self,*args):
+
+        create_project(
+            self.name.text,
+            self.code.text
         )
 
-        self.project_name.text = ""
-        self.python_code.text = ""
 
-        self.manager.current = "home"
+        self.manager.get_screen(
+            "projects"
+        ).refresh()
+
+
+        self.manager.current="projects"
+
+
+
+
+
+class ProjectDetailScreen(Screen):
+
+
+    project_id=None
+
+
+
+    def __init__(self,**kw):
+
+        super().__init__(**kw)
+
+
+        layout=MDBoxLayout(
+            orientation="vertical",
+            padding=20,
+            spacing=15
+        )
+
+
+        self.financial=MDTextField(
+            hint_text="صورت مالی شرکت",
+            multiline=True
+        )
+
+
+        self.result=MDLabel(
+            text="نتیجه تحلیل"
+        )
+
+
+        run=MDRaisedButton(
+            text="▶ اجرای تحلیل"
+        )
+
+
+        run.bind(
+            on_press=self.execute
+        )
+
+
+        layout.add_widget(
+            self.financial
+        )
+
+
+        layout.add_widget(run)
+
+        layout.add_widget(
+            self.result
+        )
+
+
+        self.add_widget(layout)
+
+
+
+
+    def execute(self,*args):
+
+
+        project=get_project(
+            self.project_id
+        )
+
+
+        result=run_code(
+            project[2],
+            self.financial.text
+        )
+
+
+        self.result.text=result
+
+
+        save_financial(
+            self.project_id,
+            self.financial.text,
+            result
+        )
