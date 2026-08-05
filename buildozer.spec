@@ -15,7 +15,10 @@ source.include_exts = py,png,jpg,jpeg,kv,db,txt
 version = 0.1
 
 
-requirements = python3==3.11,kivy==2.3.0,kivymd==1.2.0
+
+requirements = python3,kivy==2.3.0,kivymd==1.2.0
+
+p4a.branch = master
 
 android.python_version = 3.11
 
