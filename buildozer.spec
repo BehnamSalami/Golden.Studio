@@ -18,7 +18,7 @@ version = 0.1
 
 requirements = python3,kivy==2.3.0,kivymd==1.2.0
 
-p4a.branch = master
+p4a.version = 2023.10.16
 
 android.python_version = 3.11
 
