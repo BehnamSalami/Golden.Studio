@@ -2,90 +2,131 @@ import sqlite3
 import os
 
 
-DB_NAME = "projects.db"
+DB_PATH = "projects.db"
 
 
-def get_connection():
-
-    return sqlite3.connect(DB_NAME)
+def connection():
+    return sqlite3.connect(DB_PATH)
 
 
 
 def create_database():
 
-    conn = get_connection()
+    conn = connection()
+    cur = conn.cursor()
 
-    cursor = conn.cursor()
 
-
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS projects
-        (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            python_code TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-        """
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS projects
+    (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        python_code TEXT,
+        financial_data TEXT,
+        result TEXT
     )
+    """)
 
 
     conn.commit()
-
     conn.close()
 
 
 
-def save_project(name, python_code):
+def create_project(name, python_code):
 
-    conn = get_connection()
+    conn = connection()
+    cur = conn.cursor()
 
-    cursor = conn.cursor()
 
-
-    cursor.execute(
+    cur.execute(
         """
         INSERT INTO projects
         (
-            name,
-            python_code
+        name,
+        python_code
         )
         VALUES (?,?)
         """,
         (
-            name,
-            python_code
+        name,
+        python_code
         )
     )
 
 
     conn.commit()
-
     conn.close()
 
 
 
 def get_projects():
 
-    conn = get_connection()
+    conn = connection()
+    cur = conn.cursor()
 
-    cursor = conn.cursor()
 
-
-    cursor.execute(
+    cur.execute(
         """
-        SELECT id, name, python_code
+        SELECT id,name
         FROM projects
         ORDER BY id DESC
         """
     )
 
 
-    data = cursor.fetchall()
-
+    data = cur.fetchall()
 
     conn.close()
 
+    return data
+
+
+
+def get_project(project_id):
+
+    conn = connection()
+    cur = conn.cursor()
+
+
+    cur.execute(
+        """
+        SELECT *
+        FROM projects
+        WHERE id=?
+        """,
+        (project_id,)
+    )
+
+
+    data = cur.fetchone()
+
+    conn.close()
 
     return data
+
+
+
+def save_financial(project_id,data,result):
+
+    conn = connection()
+    cur = conn.cursor()
+
+
+    cur.execute(
+        """
+        UPDATE projects
+        SET financial_data=?,
+        result=?
+        WHERE id=?
+        """,
+        (
+        data,
+        result,
+        project_id
+        )
+    )
+
+
+    conn.commit()
+    conn.close()
