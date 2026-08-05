@@ -22,7 +22,7 @@ class GoldenStudioApp(MDApp):
 
         manager.add_widget(
             CreateProjectScreen(
-                name="create"
+                name="create_project"
             )
         )
 
