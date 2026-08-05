@@ -11,25 +11,33 @@ source.include_exts = py,png,jpg,jpeg,kv,json,db,txt,ttf
 
 version = 1.0
 
-requirements = python3==3.11,kivy==2.3.0,kivymd==1.2.0
+
+requirements = python3,kivy==2.3.0,kivymd==1.2.0
+
 
 p4a.branch = release-2024.01.21
+
 
 orientation = portrait
 
 fullscreen = 0
 
+
 android.api = 34
+
 android.minapi = 24
+
 
 android.ndk = 25b
 
+
 android.archs = arm64-v8a
+
 
 android.accept_sdk_license = True
 
-android.permissions = INTERNET
 
+android.permissions = INTERNET
 
 
 
