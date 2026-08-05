@@ -24,6 +24,8 @@ orientation = portrait
 fullscreen = 0
 
 
+# Android
+
 android.api = 34
 
 android.minapi = 24
@@ -34,7 +36,16 @@ android.ndk = 25b
 android.archs = arm64-v8a
 
 
+android.accept_sdk_license = True
+
+
+# استفاده از SDK نصب شده در GitHub Actions
+
+android.sdk_path = /usr/local/lib/android/sdk
+
+
 android.permissions = INTERNET
+
 
 
 [buildozer]
