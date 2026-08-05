@@ -96,7 +96,7 @@ jobs:
 
           pip install cython==0.29.33
 
-          pip install python-for-android==2024.01.21
+          pip install python-for-android==2023.10.16
 
           pip install kivy==2.3.0
 
