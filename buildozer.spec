@@ -11,7 +11,9 @@ source.include_exts = py,png,jpg,jpeg,kv,json,db,txt,ttf
 
 version = 1.0
 
-requirements = python3==3.11,kivy==2.3.0,kivymd==1.2.0
+requirements = python3,kivy==2.3.0,kivymd==1.2.0
+
+p4a.branch = release-2024.01.21
 
 orientation = portrait
 
@@ -29,11 +31,6 @@ android.accept_sdk_license = True
 android.permissions = INTERNET
 
 
-# جلوگیری از گرفتن Python جدید
-p4a.branch = master
-
-# استفاده از نسخه پایدار
-p4a.version = 2024.1.21
 
 
 [buildozer]
