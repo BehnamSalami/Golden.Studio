@@ -23,7 +23,7 @@ orientation = portrait
 fullscreen = 0
 
 
-android.api = 34
+android.api = 36
 
 android.minapi = 24
 
