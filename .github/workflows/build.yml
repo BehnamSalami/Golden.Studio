@@ -2,9 +2,12 @@ name: Build Golden Studio APK
 
 
 on:
+
   push:
+
     branches:
       - main
+
 
   workflow_dispatch:
 
@@ -12,44 +15,48 @@ on:
 
 jobs:
 
+
   build:
 
+
     runs-on: ubuntu-22.04
+
 
 
     steps:
 
 
     - name: Checkout repository
+
       uses: actions/checkout@v4
 
 
 
     - name: Setup Python
+
       uses: actions/setup-python@v5
+
       with:
+
         python-version: "3.11"
 
 
 
     - name: Setup Java
+
       uses: actions/setup-java@v4
+
       with:
+
         distribution: temurin
+
         java-version: "17"
 
 
 
     - name: Setup Android SDK
+
       uses: android-actions/setup-android@v3
-
-
-
-    - name: Accept Android licenses
-
-      run: |
-
-        yes | sdkmanager --licenses
 
 
 
@@ -57,18 +64,40 @@ jobs:
 
       run: |
 
+
+        yes | sdkmanager --licenses || true
+
+
         sdkmanager \
           "platform-tools" \
           "platforms;android-34" \
-          "build-tools;34.0.0"
+          "build-tools;34.0.0" \
+          "ndk;25.2.9519653"
 
 
 
-    - name: Install system dependencies
+    - name: Set Android environment
 
       run: |
 
+
+        echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+
+
+        echo "/usr/local/lib/android/sdk/platform-tools" >> $GITHUB_PATH
+
+
+        echo "/usr/local/lib/android/sdk/build-tools/34.0.0" >> $GITHUB_PATH
+
+
+
+    - name: Install Linux dependencies
+
+      run: |
+
+
         sudo apt update
+
 
         sudo apt install -y \
           git \
@@ -83,19 +112,21 @@ jobs:
 
 
 
-    - name: Install Python packages
+    - name: Install Python dependencies
 
       run: |
 
+
         python -m pip install --upgrade pip
 
-        pip install \
-          buildozer==1.5.0 \
-          cython==0.29.33
 
-        pip install \
-          kivy==2.3.0 \
-          kivymd==1.2.0
+        pip install buildozer==1.5.0
+
+
+        pip install cython==0.29.33
+
+
+        pip install kivy==2.3.0 kivymd==1.2.0
 
 
 
@@ -103,17 +134,27 @@ jobs:
 
       run: |
 
+
+        echo "ANDROID HOME"
+
         echo $ANDROID_HOME
+
+
+        echo "Build tools"
 
         ls $ANDROID_HOME/build-tools
 
-        which aidl || find $ANDROID_HOME -name aidl
+
+        echo "AIDL"
+
+        find $ANDROID_HOME -name aidl
 
 
 
     - name: Build APK
 
       run: |
+
 
         buildozer android debug
 
@@ -123,8 +164,11 @@ jobs:
 
       uses: actions/upload-artifact@v4
 
+
       with:
 
+
         name: golden-studio-apk
+
 
         path: bin/*.apk
