@@ -1,31 +1,46 @@
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager
 
-from app.screens import HomeScreen, CreateProjectScreen
+
+from app.screens import (
+    ProjectsScreen,
+    CreateProjectScreen,
+    ProjectDetailScreen
+)
 
 
 class GoldenStudioApp(MDApp):
 
+
     def build(self):
 
-        self.title = "Golden Studio"
+        self.title="Golden Studio"
 
-        self.theme_cls.primary_palette = "Blue"
+        manager=ScreenManager()
 
-        manager = ScreenManager()
 
         manager.add_widget(
-            HomeScreen(
-                name="home"
+            ProjectsScreen(
+                name="projects"
             )
         )
+
 
         manager.add_widget(
             CreateProjectScreen(
-                name="create_project"
+                name="create"
             )
         )
 
-        manager.current = "home"
+
+        manager.add_widget(
+            ProjectDetailScreen(
+                name="detail"
+            )
+        )
+
+
+        manager.current="projects"
+
 
         return manager
