@@ -4,7 +4,7 @@ Offline Python Workspace
 
 Features
 
-Project Manager
+ .Project Manager
 Python Code Editor
 Automatic Form Generator
 Python Runner
