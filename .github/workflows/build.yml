@@ -40,7 +40,32 @@ jobs:
 
 
 
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+
+
+    - name: Accept Android licenses
+
+      run: |
+
+        yes | sdkmanager --licenses
+
+
+
+    - name: Install Android packages
+
+      run: |
+
+        sdkmanager \
+          "platform-tools" \
+          "platforms;android-34" \
+          "build-tools;34.0.0"
+
+
+
     - name: Install system dependencies
+
       run: |
 
         sudo apt update
@@ -58,20 +83,7 @@ jobs:
 
 
 
-    - name: Setup Android SDK
-
-      run: |
-
-        yes | sdkmanager --licenses || true
-
-        sdkmanager \
-          "platform-tools" \
-          "platforms;android-34" \
-          "build-tools;34.0.0"
-
-
-
-    - name: Install Python dependencies
+    - name: Install Python packages
 
       run: |
 
@@ -87,18 +99,15 @@ jobs:
 
 
 
-    - name: Check Android tools
+    - name: Verify Android tools
 
       run: |
 
-        echo "Android SDK:"
         echo $ANDROID_HOME
 
-        echo "Build Tools:"
         ls $ANDROID_HOME/build-tools
 
-        echo "AIDL:"
-        find $ANDROID_HOME -name aidl
+        which aidl || find $ANDROID_HOME -name aidl
 
 
 
@@ -116,6 +125,6 @@ jobs:
 
       with:
 
-        name: golden-studio-debug-apk
+        name: golden-studio-apk
 
         path: bin/*.apk
