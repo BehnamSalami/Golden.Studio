@@ -14,6 +14,9 @@ class GoldenStudioApp(MDApp):
 
     def build(self):
 
+from app.database import create_database
+    create_database()
+
         self.title="Golden Studio"
 
         manager=ScreenManager()
