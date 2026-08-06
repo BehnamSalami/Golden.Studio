@@ -10,7 +10,6 @@ from app.database import *
 from app.python_runner import run_code
 
 
-create_database()
 
 
 
