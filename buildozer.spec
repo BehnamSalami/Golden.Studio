@@ -12,7 +12,7 @@ source.include_exts = py,png,jpg,jpeg,kv,json,db,txt,ttf
 version = 1.0
 
 
-requirements = python3,kivy==2.3.0,kivymd==1.2.0,pillow
+requirements = python3,kivy==2.3.0,kivymd==1.2.0
 
 p4a.branch = release-2024.01.21
 
