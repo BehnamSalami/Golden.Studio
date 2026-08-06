@@ -1,8 +1,17 @@
 import sqlite3
 import os
+from kivy.app import App
 
 
-DB_PATH = "projects.db"
+def get_db_path():
+    try:
+        # روی اندروید از پوشه خصوصی برنامه استفاده می‌کند
+        return os.path.join(App.get_running_app().user_data_dir, "projects.db")
+    except Exception:
+        return "projects.db"
+
+
+DB_PATH = get_db_path()
 
 
 def connection():
